@@ -1,0 +1,157 @@
+<meta charset="utf-8" />
+<div class="row">
+	<div class="col-md-12">
+		<div class="mensagem portlet light bordered">
+			<div class="portlet-title">
+				<form role="form">
+					<div class="form-body row">
+						<div class="form-group col-md-4">
+							<div class="form-group has-feedback">
+								<i class="glyphicon glyphicon-search form-control-feedback"></i>
+								<input type="text" class="form-control" placeholder="Pesquisar"
+									ng-model="search" />
+							</div>
+						</div>
+
+					</div>
+				</form>
+			</div>
+			<div class="portlet-body">
+				<form role="form">
+					<div class="form-body row">
+						<div class="form-group col-md-3 pull-right">
+							<a ng-class="{active: activetab == '/new'}" href="#/new">
+								<button id="novo" class="form-control btn btn-primary">
+									<i class="glyphicon glyphicon-plus"></i> Novo Cliente
+								</button>
+							</a>
+						</div>
+						<div class="form-group col-md-2">
+							<button class="form-control btn btn-danger" 
+								ng-click="action('excluir')">
+								<i class="glyphicon glyphicon-trash"></i>Excluir Selecionados
+							</button>
+						</div>
+					</div>
+				</form>
+				<div class="table-responsive">
+					<table
+						class="table table-striped table-bordered table-hover table-checkable order-column">
+						<thead>
+							<tr>
+								<th class="table-checkbox"><label
+									class="mt-checkbox mt-checkbox-outline mt-checkbox-single">
+										<input type="checkbox" ng-model="listAll"
+										ng-click="checkAll($cliente)" class="group-checkable"
+										data-set="#sample_1 .checkboxes" /> <span></span>
+								</label></th>
+								<th ng-click="sort('nome')" style="width: 35%">Nome <span
+									class="glyphicon sort-icon" ng-show="sortKey=='nome'"
+									ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+								</th>
+
+								<th ng-click="sort('rendimentoMensal')">Rendimento mensal <span
+									class="glyphicon sort-icon"
+									ng-show="sortKey=='rendimentoMensal'"
+									ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+								</th>
+
+								<th>Risco</th>
+								<th></th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								ng-repeat="cliente in clientes  | orderBy:sortKey:reverse | filter: search ">
+								<td><label
+									class="mt-checkbox mt-checkbox-outline mt-checkbox-single">
+										<input type="checkbox" ng-checked="selectAll()"
+										ng-click="verificaCheck(cliente)"
+										ng-checked="selecionados.indexOf(cliente) > -1"
+										class="checkboxes" ng-model="check" /> <span></span>
+								</label></td>
+								<td><a href="#/edit/{{cliente.id}}"> {{cliente.nome}} </a>
+								</td>
+								<td><a href="#/edit/{{cliente.id}}"> {{ cliente.rendimentoMensal | number : 2 }} </a></td>
+								<td><a href="#/edit/{{cliente.id}}">{{ (cliente.rendimentoMensal != null && cliente.rendimentoMensal <= 2000 ) ? "C" :
+									(cliente.rendimentoMensal > 2000 && cliente.rendimentoMensal <=
+									8000) ? "B" : (cliente.rendimentoMensal != null) ? "A" : ""}}</a></td>
+								
+								<td><button id="novo" class="form-control btn btn-link" data-toggle="modal" data-target="#simulacaoModal" ng-click="modalSimulacao(cliente)">
+									<i class="glyphicon glyphicon-usd"></i> Simulação
+								</button></td>
+							</tr>
+
+							<tr ng-show="(clientes|filter:search|filter:status).length==0">
+								<td colspan="11">
+									<center>
+										<strong>Nenhum item encontrado</strong>
+									</center>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					Exibindo: {{(clientes|filter:search|filter:status).length}} de
+					{{clientes.length}} itens
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="simulacaoModal" tabindex="-1" role="dialog" aria-labelledby="simulacaoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="simulacaoModalLabel">Simulação de Empréstimo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="form-body">
+      <div class="row">
+      	<div class="col-md-12">
+	      <div class="modal-body">
+	        <input type="text" ng-model="clienteSimulacao.nome" class="form-control" disabled="disabled" size="10">
+	      </div>
+	      </div>
+	      </div>
+	      <div class="row">
+		      <div class="col-md-8">
+		      <div class="modal-body">
+		      	<label>Valor do Empréstimo: </label><input type="number" ng-model="clienteSimulacao.valorEmprestimo" class="form-control" size="10" >
+		      	</div>
+		      </div>
+		      <div class="col-md-4">
+		      <div class="modal-body">
+		      	<label>Duração: </label><input type="number" ng-model="clienteSimulacao.duracaoEmprestimo" class="form-control" size="5" >
+		      	</div>
+		      </div>
+	   </div>
+	   <div class="row" ng-show="clienteSimulacao.valorParcela != null">
+	   <div class="col-md-12">
+	   <div class="modal-body">
+	   		<div class="panel panel-success">
+				<div class="panel-heading">Parcelas</div>
+			
+			</div>
+	   		<li ng-repeat="i in geraLista(clienteSimulacao.totalParcelas) track by $index"><span>R$ {{clienteSimulacao.valorParcela | number : 2}}</span></li>
+	   		
+	   		<label>Total a pagar: R$ {{clienteSimulacao.totalDivida | number : 2}}</label>
+	   		</div>
+	   		</div>
+	   </div>
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="clienteSimulacao.totalParcelas = 0">Fechar</button>
+        <button type="button" class="btn btn-primary" ng-click="simulacaoMes()">Calcular Juros Ao Mes</button>
+        <button type="button" class="btn btn-primary" ng-click="simulacaoAno()">Calcular Juros Ao Ano</button>
+        <button type="button" class="btn btn-primary" ng-click="simulacaoTotal()">Calcular Juros Sob Valor Total</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,97 @@
+<meta charset="utf-8" />
+<div class="row">
+	<div class="col-md-12">
+		<div class="mensagem portlet light bordered">
+			<div class="portlet-body form">
+				<form name="clienteForm" role="form"
+					ng-class="{submitted:clienteForm.submitted}">
+					<div class="form-body">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Nome Completo*</label> <input type="text" required
+										maxlength="200" ng-model="cliente.nome" class="form-control">
+									
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Rendimento mensal*</label> <input type="text"
+										id="rendimento" name="rendimento"
+										value="{{cliente.rendimentoMensal | number : 2}}"
+										ng-model="cliente.rendimentoMensal" class="form-control">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+								
+									<label>Risco </label> <input type="text" disabled="disabled"
+										id="rendimento" name="rendimento"
+										value="{{(cliente.rendimentoMensal != null && cliente.rendimentoMensal <= 2000) ? 'C' : (cliente.rendimentoMensal > 2000 && cliente.rendimentoMensal <= 8000) ? 'B' : (cliente.rendimentoMensal != null) ? 'A' : ''}}"
+										class="form-control">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>CEP *</label> <input type="text" ng-blur="buscaCep()"
+										class="form-control" maxlength="8" 
+										ng-model="cliente.endereco.cep">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Cidade *</label> <input type="text" maxlength="200"
+										ng-model="cliente.endereco.municipio" class="form-control">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label>Endereço *</label> <input type="text" maxlength="200"
+										ng-model="cliente.endereco.logradouro" class="form-control">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Numero *</label> <input type="text" maxlength="5"
+										ng-model="cliente.endereco.numero" class="form-control">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div clas="form-group">
+									<label>Bairro *</label> <input type="text" maxlength="20"
+										ng-model="cliente.endereco.bairro" class="form-control">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-2">
+								<div clas="form-group">
+									<label>UF *</label> <input type="text" maxlength="2"
+										ng-model="cliente.endereco.uf" class="form-control">
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="form-actions">
+						<button type="submit" ng-click="salvar(cliente)"
+							class="btn btn-primary">
+							<i class="fa fa-check"></i> Salvar
+						</button>
+						<a href="#/" ng-class="{active: activetab == '/new'}">
+							<button type="button" class="btn btn-secondary">
+								<i class="fa fa-close"></i> Cancelar
+							</button>
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+</script>

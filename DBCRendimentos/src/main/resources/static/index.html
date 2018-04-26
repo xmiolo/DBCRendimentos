@@ -1,0 +1,35 @@
+<!doctype html>
+<html ng-app="appRendimentos">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="content-language" content="pt-br" />
+<title>DBC Rendimentos</title>
+<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet"
+	href="assets/bootstrap/css/bootstrap-theme.min.css" />
+	
+</head>
+</head>
+<body>
+	<div class="panel panel-info">
+		<div class="panel-heading">DBCRendimentos - Clientes</div>
+		<div class="panel-body">
+			<div ng-view class="fade-in-up"></div>
+		</div>
+	</div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+	<script
+		src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular.min.js"></script>
+
+	<script src="assets/angularjs/plugins/angular-ui/angular-ui.min.js"></script>
+	<script
+		src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+		
+	<script src="app/app.js"></script>
+	<script src="app/controllers/ClienteController.js"></script>
+	<script src="app/factories/ClienteFactory.js"></script>
+	<script src="app/factories/ViaCepFactory.js"></script>
+</body>
+</html>
